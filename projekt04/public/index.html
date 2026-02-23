@@ -6,17 +6,33 @@
     <title>the silly forum!!!</title>
 </head>
 <body onload="onload(this)">
-    <form id="create" method="post" action="/">
-        <input id="title" type="text" placeholder="silly title!!!" required>
-        <input id="content" type="text" placeholder="i like silly things..." required>
+    <p>You're not logged in!</p>
+    <form id="login" method="post">
+        <input name="login" id="login" type="text" placeholder="login" required>
+        <input name="password" id="password" type="text" placeholder="password" required>
+        <button type="submit">Log in</button>
+    </form>
+
+    <p>Don't have account?</p>
+    <form id="accountCreation" method="post">
+        <input name="login" id="login" type="text" placeholder="login" required>
+        <input name="password" id="password" type="text" placeholder="password" required>
+        <button type="submit">Create silly account</button>
+    </form>
+
+    <form id="create" method="post">
+        <input name="title" id="title" type="text" placeholder="silly title!!!" required>
+        <input name="content" id="content" type="text" placeholder="i like silly things..." required>
         <button type="submit">Create silly post</button>
     </form>
+
     <section id="posts">
         <article class="post">
             <h1 class="title">title!!!</h1>
             <p class="content">content!!!</p>
         </article>
     </section>
+
     <footer>Made by VerbosalSpy circa 2026, i think</footer>
 </body>
 </html>
