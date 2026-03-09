@@ -13,31 +13,44 @@ app.use(express.static("public"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.post("/login", async (req, res) => {
-  var params = req.body
-  databaseFunctions.login(params.title, params.content);
-
-  res.render("index");
-});
+async function render(req, res) {
+  res.render("index", {posts: await databaseFunctions.fetchPosts()});
+}
 
 app.post("/createAccount", async (req, res) => {
   var params = req.body
-  databaseFunctions.addUser(params.login, params.password);
 
-  res.render("index");
+  var createAccount = databaseFunctions.addUser(params.login, params.password);
+
+  if (createAccount.successful == true) {
+        console.log(`Created account!
+        Login: ${params.login}
+        Password: ${params.password}`);
+  } else {
+        console.log(`Account creation failed!
+        Reason: ${}
+        Login: ${params.login}
+        Password: ${params.password}`);
+  };
+
+  render(req, res);
+});
+
+app.post("/login", async (req, res) => {
+  var params = req.body
+  databaseFunctions.login(params.login, params.password);
+
+  render(req, res);
 });
 
 app.post("/createPost", async (req, res) => {
   var params = req.body
-  //databaseFunctions.addPost(userId, params.title, params.content);
+  databaseFunctions.addPost(1, params.title, params.content);
 
-  res.render("index");
+  render(req, res);
 });
 
-app.all("/", async (req, res) => {
-  res.render("index", {posts : databaseFunctions.fetchPosts()});
-});
-
+app.all("/", render);
 
 app.listen(port, () => {
   console.log(`Server listening on http://localhost:${port}`);
