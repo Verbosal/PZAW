@@ -1,0 +1,20 @@
+<section id="postsAndCreation">
+    <h2>Welcome user! <a>click here</a> to log out.</h2>
+
+    <form id="create" method="post" action="/createPost">
+        <input name="title" id="title" type="text" placeholder="silly title!!!" required>
+        <input name="content" id="content" type="text" placeholder="i like silly things..." required>
+        <button type="submit">Create silly post</button>
+    </form>
+    
+    <hr>
+
+    <section id="posts">
+        <% posts.forEach(function(post){ %>
+            <article class="post">
+                <h1 class="title"><%= post.title %></h1>
+                <p class="content"><%= post.content %></p>
+            </article>
+        <% }) %>
+    </section>
+</section>

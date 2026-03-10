@@ -6,36 +6,9 @@
     <title>the silly forum!!!</title>
 </head>
 <body>
-    <p>You're not logged in!</p>
-    <form id="login" method="post" action="/login">
-        <input name="login" id="login" type="text" placeholder="login" required>
-        <input name="password" id="password" type="text" placeholder="password" required>
-        <button type="submit">Log in</button>
-    </form>
+    <% include("unlogged.ejs") %>
 
-    <p>Don't have account?</p>
-    <form id="accountCreation" method="post" action="/createAccount">
-        <input name="login" id="login" type="text" placeholder="login" required>
-        <input name="password" id="password" type="text" placeholder="password" required>
-        <button type="submit">Create silly account</button>
-    </form>
-
-    <form id="create" method="post" action="/createPost">
-        <input name="title" id="title" type="text" placeholder="silly title!!!" required>
-        <input name="content" id="content" type="text" placeholder="i like silly things..." required>
-        <button type="submit">Create silly post</button>
-    </form>
-    
-    <hr>
-
-    <section id="posts">
-        <% posts.forEach(function(post){ %>
-            <article class="post">
-                <h1 class="title"><%= post.title %></h1>
-                <p class="content"><%= post.content %></p>
-            </article>
-        <% }) %>
-    </section>
+    <% include("loggedIn.ejs") %>
 
     <footer>Made by VerbosalSpy circa 2026, i think</footer>
 </body>
