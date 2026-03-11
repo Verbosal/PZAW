@@ -1,7 +1,7 @@
 WIP!!!
 
 # Simple silly forum
-## Once you make an account and are log in, you can:
+## Once you make an account and log in, you can:
 - Make a post,
 - Delete your own posts,
 - See all posts,
