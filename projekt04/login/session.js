@@ -1,29 +1,18 @@
 import { DatabaseSync } from "node:sqlite";
 import { randomBytes } from "node:crypto";
 
-const db_path = "./db.sqlite";
-const db = new DatabaseSync(db_path, { readBigInts: true });
+const db = new DatabaseSync("./database/database.db", { readBigInts: true });
 
-const SESSION_COOKIE = "__Host-fisz-id";
+const SESSION_COOKIE = "__Host-forum-id";
 const ONE_WEEK = 7 * 24 * 60 * 60 * 1000;
-
-// TODO(kleindan) no user model yet
-// remember to add Foreign Key relations later
-db.exec(`
-  CREATE TABLE IF NOT EXISTS fc_session (
-    id              INTEGER PRIMARY KEY,
-    user_id         INTEGER,
-    created_at      INTEGER
-  ) STRICT;
-  `);
 
 const db_ops = {
   create_session: db.prepare(
-    `INSERT INTO fc_session (id, user_id, created_at)
-            VALUES (?, ?, ?) RETURNING id, user_id, created_at;`
+    `INSERT INTO session (id, userId, createdAt)
+            VALUES (?, ?, ?) RETURNING id, userId, createdAt;`
   ),
   get_session: db.prepare(
-    "SELECT id, user_id, created_at from fc_session WHERE id = ?;"
+    "SELECT id, userId, createdAt from session WHERE id = ?;"
   ),
 };
 
@@ -39,6 +28,7 @@ function createSession(user, res) {
     httpOnly: true,
     secure: true,
   });
+
   return session;
 }
 

@@ -75,11 +75,23 @@ async function login(login, password) {
         WHERE login = '${login}'
     `) == password) {
         console.log(`${login} successfully logged in using password ${password}!`)
+        return {successful : true};
     } else {
         console.log(`Someone tried to log in but failed with credentials:
             Login: ${login}
             Password: ${password}`)
+
+        return {successful : false};
     };
+}
+
+async function logout(login, password) {
+
+}
+
+async function clear() {
+    db.exec("DELETE FROM users");
+    db.exec("DELETE FROM posts");
 }
 
 export default {
@@ -89,5 +101,7 @@ export default {
     fetchPosts,
     fetchLogin,
     addUser,
-    login
+    login,
+    logout,
+    clear
 }

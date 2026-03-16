@@ -6,9 +6,14 @@
     <title>the silly forum!!!</title>
 </head>
 <body>
-    <% include("unlogged.ejs") %>
+    <% if (!locals.loggedIn) { %>
+        <%- include("loginForm.ejs") %>
+    <% }%>
 
-    <% include("loggedIn.ejs") %>
+    <% if (locals.loggedIn) { %>
+        <%- include("content.ejs") %>
+    <% }%>
+
 
     <footer>Made by VerbosalSpy circa 2026, i think</footer>
 </body>
