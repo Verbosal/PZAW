@@ -5,9 +5,7 @@ const PEPPER = process.env.PEPPER;
 if (PEPPER == null) {
   console.error(
     `PEPPER environment variable missing.
-    Please create an env file or provide SECRET via environment variables.
-    
-    In other words: Did you run "login/generate_env.bash" beforehand?`,
+    Please create an env file or provide SECRET via environment variables.`,
   );
   process.exit(1);
 }

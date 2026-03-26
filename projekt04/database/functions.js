@@ -11,14 +11,14 @@ const getResult = query => new Promise((resolve, reject) => {
   })
 });
 
-async function addUser(login, password) {
+async function addUser(username, password) {
     var isError = false;
     
     try {
         await getResult(`
             INSERT INTO users
-            (login, password, joinedAt)
-            VALUES ('${login}', '${password}', datetime('now'));
+            (username, passhash, createdAt)
+            VALUES ("${username}", "${password}", ${Date.now()});
         `);
     } catch(error) {
         isError = error;
@@ -30,32 +30,32 @@ async function addUser(login, password) {
     };
 }
 
-async function fetchLogin(userId) {
+async function fetchUsername(userId) {
     return await getResult(`
-        SELECT login
+        SELECT username
         FROM users
-        WHERE userId = ${userId};
+        WHERE id = ${userId};
     `);
 }
 
 async function addPost(userId, title, content) {
     db.exec(`
         INSERT INTO posts
-        (userId, title, content, postedAt)
-        VALUES (${userId}, '${title}', '${content}', datetime('now'));
+        (userId, title, content, createdAt)
+        VALUES (${userId}, "${title}", "${content}",  ${Date.now()});
     `);
 }
 
 async function removePost(postId) {
     db.exec(`
         DELETE FROM posts
-        WHERE postId = ${postId};
+        WHERE id = ${postId};
     `);
 }
 
 async function fetchPosts() {
     return await getResult(`
-        SELECT userId, title, content
+        SELECT id, title, content
         FROM posts;
     `);
 }
@@ -64,29 +64,33 @@ async function fetchPost(postId) {
     return await getResult(`
         SELECT userId, title, content
         FROM posts
-        WHERE postId = ${postId};
+        WHERE id = ${postId};
     `);
 }
 
-async function login(login, password) {
+async function login(username, password) {
     if (await getResult(`
         SELECT password
         FROM users
-        WHERE login = '${login}'
+        WHERE login = "${username}"
     `) == password) {
-        console.log(`${login} successfully logged in using password ${password}!`)
+        console.log(`${username} successfully logged in using password ${password}!`)
         return {successful : true};
     } else {
         console.log(`Someone tried to log in but failed with credentials:
-            Login: ${login}
+            Login: ${username}
             Password: ${password}`)
 
         return {successful : false};
     };
 }
 
-async function logout(login, password) {
+async function logout(userId) {
 
+}
+
+async function checkIfAdmin(userId) {
+    return false;
 }
 
 async function clear() {
@@ -99,9 +103,10 @@ export default {
     removePost,
     fetchPost,
     fetchPosts,
-    fetchLogin,
+    fetchUsername,
     addUser,
     login,
     logout,
+    checkIfAdmin,
     clear
 }

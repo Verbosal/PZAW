@@ -1,11 +1,11 @@
 import express from "express";
+
 import databaseFunctions from "./database/functions.js";
+//import session from "./login/session.js";
+// import auth from "./login/auth.js";
+// import user from "./login/user.js";
 
-import session from "./login/session.js";
-import auth from "./login/auth.js";
-import user from "./login/user.js";
-
-const port = 1337;
+const port = process.env.PORT;
 const app = express();
 
 app.set('views', './public');
@@ -22,18 +22,18 @@ app.use(express.urlencoded({ extended: true }));
 app.post("/createAccount", async (req, res) => {
   var params = req.body
 
-  // var createAccount = await databaseFunctions.addUser(params.login, params.password);
+  var createAccount = await databaseFunctions.addUser(params.login, params.password);
 
-  // if (createAccount.successful == true) {
-  //       console.log(`Created account!
-  //       Login: ${params.login}
-  //       Password: ${params.password}`);
-  // } else { // Error: SQLITE_CONSTRAINT: UNIQUE constraint failed: users.login
-  //       console.log(`Account creation failed!
-  //       Reason: ${createAccount.reason}
-  //       Login: ${params.login}
-  //       Password: ${params.password}`);
-  // };
+  if (createAccount.successful == true) {
+        console.log(`Created account!
+        Login: ${params.login}
+        Password: ${params.password}`);
+  } else { // Error: SQLITE_CONSTRAINT: UNIQUE constraint failed: users.login
+        console.log(`Account creation failed!
+        Reason: ${createAccount.reason}
+        Login: ${params.login}
+        Password: ${params.password}`);
+  };
 
   res.render("index");
 });
@@ -41,9 +41,9 @@ app.post("/createAccount", async (req, res) => {
 app.post("/login", async (req, res) => {
   var params = req.body
   
-  // if ((await databaseFunctions.login(params.login, params.password)).successful) {
-  //   session.createSession();
-  // };
+  if ((await databaseFunctions.login(params.login, params.password)).successful) {
+     session.createSession();
+  };
 
   res.render("index");
 });
@@ -63,7 +63,9 @@ app.post("/createPost", async (req, res) => {
   res.render("index");
 });
 
-app.all("/", render);
+app.all("/", (req, res)=>{
+  res.render("index");
+});
 
 app.listen(port, () => {
   console.log(`Server listening on http://localhost:${port}`);
